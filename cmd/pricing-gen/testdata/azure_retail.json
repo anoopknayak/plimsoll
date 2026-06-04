@@ -1,0 +1,75 @@
+{
+  "BillingCurrency": "USD",
+  "Items": [
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Standard_D2s_v5",
+      "retailPrice": 0.096,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D2s v5",
+      "meterName": "D2s v5"
+    },
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Standard_D2s_v5",
+      "retailPrice": 0.0192,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D2s v5 Spot",
+      "meterName": "D2s v5 Spot"
+    },
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Standard_D4s_v5",
+      "retailPrice": 0.192,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D4s v5",
+      "meterName": "D4s v5"
+    },
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Standard_D4s_v5",
+      "retailPrice": 0.0384,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D4s v5 Spot",
+      "meterName": "D4s v5 Spot"
+    },
+    {
+      "armRegionName": "westus2",
+      "armSkuName": "Standard_D2s_v5",
+      "retailPrice": 0.089,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D2s v5",
+      "meterName": "D2s v5"
+    },
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "StandardSSD_LRS",
+      "retailPrice": 0.075,
+      "unitOfMeasure": "1 GB/Month",
+      "type": "Consumption",
+      "serviceName": "Storage",
+      "skuName": "Standard SSD Managed Disks",
+      "meterName": "Standard SSD LRS"
+    },
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Premium_LRS",
+      "retailPrice": 0.135,
+      "unitOfMeasure": "1 GB/Month",
+      "type": "Consumption",
+      "serviceName": "Storage",
+      "skuName": "Premium SSD Managed Disks",
+      "meterName": "Premium LRS"
+    }
+  ]
+}

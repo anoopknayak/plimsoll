@@ -1,4 +1,4 @@
-.PHONY: all test lint build tidy cover clean
+.PHONY: all test lint build tidy cover clean refresh-pricing
 
 GO ?= go
 BIN_DIR := bin
@@ -31,6 +31,16 @@ build:
 ## tidy: sync go.mod/go.sum
 tidy:
 	$(GO) mod tidy
+
+## refresh-pricing: regenerate the embedded snapshots from upstream pricing
+## sources. Requires source URLs (and a GCP API key) via environment variables;
+## intended to run in the scheduled CI refresh workflow.
+##   GCP_CATALOG_URL, AWS_PRICELIST_URL, AZURE_RETAIL_URL
+##   GCP_REGION, AWS_REGION, AZURE_REGION
+refresh-pricing: build
+	$(BIN_DIR)/pricing-gen --cloud gcp   --region "$(GCP_REGION)"   --url "$(GCP_CATALOG_URL)"  --out internal/pricing/data
+	$(BIN_DIR)/pricing-gen --cloud aws   --region "$(AWS_REGION)"   --url "$(AWS_PRICELIST_URL)" --out internal/pricing/data
+	$(BIN_DIR)/pricing-gen --cloud azure --region "$(AZURE_REGION)" --url "$(AZURE_RETAIL_URL)"  --out internal/pricing/data
 
 ## clean: remove build and coverage artifacts
 clean:

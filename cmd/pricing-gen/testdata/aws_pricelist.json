@@ -1,0 +1,81 @@
+{
+  "formatVersion": "v1.0",
+  "products": {
+    "M5L": {
+      "sku": "M5L",
+      "productFamily": "Compute Instance",
+      "attributes": {
+        "instanceType": "m5.large",
+        "regionCode": "us-east-1",
+        "operatingSystem": "Linux",
+        "tenancy": "Shared",
+        "preInstalledSw": "NA",
+        "capacitystatus": "Used"
+      }
+    },
+    "M5X": {
+      "sku": "M5X",
+      "productFamily": "Compute Instance",
+      "attributes": {
+        "instanceType": "m5.xlarge",
+        "regionCode": "us-east-1",
+        "operatingSystem": "Linux",
+        "tenancy": "Shared",
+        "preInstalledSw": "NA",
+        "capacitystatus": "Used"
+      }
+    },
+    "M5L_WIN": {
+      "sku": "M5L_WIN",
+      "productFamily": "Compute Instance",
+      "attributes": {
+        "instanceType": "m5.large",
+        "regionCode": "us-east-1",
+        "operatingSystem": "Windows",
+        "tenancy": "Shared",
+        "preInstalledSw": "NA",
+        "capacitystatus": "Used"
+      }
+    },
+    "GP3": {
+      "sku": "GP3",
+      "productFamily": "Storage",
+      "attributes": {
+        "volumeApiName": "gp3",
+        "regionCode": "us-east-1"
+      }
+    }
+  },
+  "terms": {
+    "OnDemand": {
+      "M5L": {
+        "M5L.JRTCKXETXF": {
+          "priceDimensions": {
+            "M5L.JRTCKXETXF.6YS6EN2CT7": { "unit": "Hrs", "pricePerUnit": { "USD": "0.0960000000" } }
+          }
+        }
+      },
+      "M5X": {
+        "M5X.JRTCKXETXF": {
+          "priceDimensions": {
+            "M5X.JRTCKXETXF.6YS6EN2CT7": { "unit": "Hrs", "pricePerUnit": { "USD": "0.1920000000" } }
+          }
+        }
+      },
+      "M5L_WIN": {
+        "M5L_WIN.JRTCKXETXF": {
+          "priceDimensions": {
+            "M5L_WIN.JRTCKXETXF.6YS6EN2CT7": { "unit": "Hrs", "pricePerUnit": { "USD": "0.1880000000" } }
+          }
+        }
+      },
+      "GP3": {
+        "GP3.JRTCKXETXF": {
+          "priceDimensions": {
+            "GP3.JRTCKXETXF.6YS6EN2CT7": { "unit": "GB-Mo", "pricePerUnit": { "USD": "0.0800000000" } }
+          }
+        }
+      }
+    }
+  }
+}

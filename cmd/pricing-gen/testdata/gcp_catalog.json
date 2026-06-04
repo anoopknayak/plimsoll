@@ -1,0 +1,52 @@
+{
+  "skus": [
+    {
+      "description": "E2 Instance Core running in Americas",
+      "category": { "resourceFamily": "Compute", "resourceGroup": "CPU", "usageType": "OnDemand" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "h", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 21811000 } } ] } }
+      ]
+    },
+    {
+      "description": "E2 Instance Ram running in Americas",
+      "category": { "resourceFamily": "Compute", "resourceGroup": "RAM", "usageType": "OnDemand" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "GiBy.h", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 2923000 } } ] } }
+      ]
+    },
+    {
+      "description": "Spot Preemptible E2 Instance Core running in Americas",
+      "category": { "resourceFamily": "Compute", "resourceGroup": "CPU", "usageType": "Preemptible" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "h", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 6543000 } } ] } }
+      ]
+    },
+    {
+      "description": "Spot Preemptible E2 Instance Ram running in Americas",
+      "category": { "resourceFamily": "Compute", "resourceGroup": "RAM", "usageType": "Preemptible" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "GiBy.h", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 877000 } } ] } }
+      ]
+    },
+    {
+      "description": "Balanced PD Capacity in Americas",
+      "category": { "resourceFamily": "Storage", "resourceGroup": "PDStandard", "usageType": "OnDemand" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "GiBy.mo", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 100000000 } } ] } }
+      ]
+    },
+    {
+      "description": "SSD backed PD Capacity in Americas",
+      "category": { "resourceFamily": "Storage", "resourceGroup": "SSD", "usageType": "OnDemand" },
+      "serviceRegions": ["us-central1"],
+      "pricingInfo": [
+        { "pricingExpression": { "usageUnit": "GiBy.mo", "tieredRates": [ { "unitPrice": { "currencyCode": "USD", "units": "0", "nanos": 170000000 } } ] } }
+      ]
+    }
+  ]
+}

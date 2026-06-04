@@ -1,0 +1,15 @@
+{
+  "BillingCurrency": "USD",
+  "Items": [
+    {
+      "armRegionName": "eastus",
+      "armSkuName": "Standard_D2s_v5",
+      "retailPrice": 0,
+      "unitOfMeasure": "1 Hour",
+      "type": "Consumption",
+      "serviceName": "Virtual Machines",
+      "skuName": "D2s v5",
+      "meterName": "D2s v5"
+    }
+  ]
+}
