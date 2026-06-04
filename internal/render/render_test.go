@@ -102,3 +102,65 @@ func TestRenderMissingChartErrors(t *testing.T) {
 		t.Fatal("expected an error for a missing chart path, got nil")
 	}
 }
+
+// writeKubeVersionChart creates a minimal chart that requires a modern
+// Kubernetes version and renders a single ConfigMap. Returns the chart dir.
+func writeKubeVersionChart(t *testing.T) string {
+	t.Helper()
+	dir := t.TempDir()
+	chartYAML := "" +
+		"apiVersion: v2\n" +
+		"name: needs-modern-k8s\n" +
+		"version: 0.1.0\n" +
+		"kubeVersion: \">=1.25.0-0\"\n"
+	if err := os.WriteFile(filepath.Join(dir, "Chart.yaml"), []byte(chartYAML), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(dir, "templates"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	tmpl := "" +
+		"apiVersion: v1\n" +
+		"kind: ConfigMap\n" +
+		"metadata:\n" +
+		"  name: cm\n" +
+		"data:\n" +
+		"  kube: {{ .Capabilities.KubeVersion.Version | quote }}\n"
+	if err := os.WriteFile(filepath.Join(dir, "templates", "cm.yaml"), []byte(tmpl), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	return dir
+}
+
+// A chart with a modern kubeVersion floor renders with defaults.
+func TestRenderModernKubeVersionDefault(t *testing.T) {
+	chart := writeKubeVersionChart(t)
+	got, err := Render(Options{ChartPath: chart})
+	if err != nil {
+		t.Fatalf("expected modern kubeVersion chart to render by default, got: %v", err)
+	}
+	if !strings.Contains(got, "kind: ConfigMap") {
+		t.Errorf("rendered output missing ConfigMap:\n%s", got)
+	}
+}
+
+// An explicit kube version is honored in rendering.
+func TestRenderExplicitKubeVersion(t *testing.T) {
+	chart := writeKubeVersionChart(t)
+	got, err := Render(Options{ChartPath: chart, KubeVersion: "v1.28.0"})
+	if err != nil {
+		t.Fatalf("Render with explicit kube version: %v", err)
+	}
+	if !strings.Contains(got, "1.28.0") {
+		t.Errorf("expected rendered kube version 1.28.0, output:\n%s", got)
+	}
+}
+
+// An invalid kube version is rejected with an error.
+func TestRenderInvalidKubeVersion(t *testing.T) {
+	chart := writeKubeVersionChart(t)
+	_, err := Render(Options{ChartPath: chart, KubeVersion: "not-a-version"})
+	if err == nil {
+		t.Fatal("expected an error for an invalid kube version, got nil")
+	}
+}

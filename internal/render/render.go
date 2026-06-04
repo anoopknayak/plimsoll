@@ -8,10 +8,17 @@ import (
 
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart/loader"
+	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/cli"
 	"helm.sh/helm/v3/pkg/cli/values"
 	"helm.sh/helm/v3/pkg/getter"
 )
+
+// DefaultKubeVersion is the Kubernetes version charts are rendered against when
+// no explicit version is supplied. It is intentionally a recent stable release
+// so charts that declare a modern kubeVersion floor render successfully. The
+// Helm SDK otherwise defaults to v1.20.0, which is too old for many charts.
+const DefaultKubeVersion = "v1.31.0"
 
 // Options configures a render.
 type Options struct {
@@ -25,6 +32,9 @@ type Options struct {
 	ReleaseName string
 	// Namespace is the target namespace; defaults to "default".
 	Namespace string
+	// KubeVersion is the Kubernetes version to render against; defaults to
+	// DefaultKubeVersion when empty.
+	KubeVersion string
 }
 
 func (o Options) releaseName() string {
@@ -69,6 +79,18 @@ func Render(opts Options) (string, error) {
 	inst.ReleaseName = opts.releaseName()
 	inst.Namespace = opts.namespace()
 	inst.IncludeCRDs = true
+
+	// Render against a modern Kubernetes version so charts with a kubeVersion
+	// constraint are not rejected by the SDK's legacy default (v1.20.0).
+	kubeVersion := opts.KubeVersion
+	if kubeVersion == "" {
+		kubeVersion = DefaultKubeVersion
+	}
+	parsed, err := chartutil.ParseKubeVersion(kubeVersion)
+	if err != nil {
+		return "", fmt.Errorf("parsing kube version %q: %w", kubeVersion, err)
+	}
+	inst.KubeVersion = parsed
 
 	rel, err := inst.Run(chart, vals)
 	if err != nil {
