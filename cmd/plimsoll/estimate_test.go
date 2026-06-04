@@ -211,3 +211,14 @@ func TestEstimate_GitSource(t *testing.T) {
 		t.Errorf("git-source output missing gcp:\n%s", out)
 	}
 }
+
+// An invalid --kube-version exits non-zero; a valid value is accepted.
+func TestEstimate_KubeVersionFlag(t *testing.T) {
+	if _, err := execute("estimate", sampleChart, "--clouds", "gcp", "--kube-version", "bogus"); err == nil {
+		t.Error("expected error for invalid --kube-version")
+	}
+	out, err := execute("estimate", sampleChart, "--clouds", "gcp", "--kube-version", "v1.28.0")
+	if err != nil {
+		t.Fatalf("valid --kube-version should succeed: %v\n%s", err, out)
+	}
+}

@@ -57,6 +57,7 @@ gcp    $195.66  $5.00    $18.26         $73.00         $291.92
 | `--spot` | Use spot/preemptible pricing (**indicative**). |
 | `--committed-use` | Use committed-use / reserved pricing. |
 | `-o, --output <format>` | Output format: `table` (default), `json`, or `markdown`. |
+| `--kube-version <version>` | Kubernetes version to render against. Default: a recent stable (`v1.31.0`). |
 
 `--spot` and `--committed-use` are mutually exclusive. A missing chart path or
 an invalid flag value prints an error and exits non-zero.
@@ -89,6 +90,10 @@ plimsoll estimate git+https://github.com/org/repo.git#v1.4.0?path=charts/app --c
 
 # Estimate a chart pulled from an OCI registry
 plimsoll estimate oci://registry.example.com/charts/app:1.2.3
+
+# Estimate a VictoriaMetrics chart by its packaged .tgz release URL
+plimsoll estimate \
+  https://github.com/VictoriaMetrics/helm-charts/releases/download/victoria-metrics-single-0.18.0/victoria-metrics-single-0.18.0.tgz
 ```
 
 Examples:
@@ -129,6 +134,9 @@ not a billing guarantee.
 - **Snapshot freshness.** Prices come from a bundled, dated snapshot embedded in
   the binary. The snapshot date is **always shown** in every output format. No
   network request is made during estimation.
+- **Rendered Kubernetes version.** Charts are templated against a recent stable
+  Kubernetes version (`v1.31.0`) so charts that declare a `kubeVersion` floor
+  render. Override with `--kube-version` to match a target cluster.
 
 ## Node-shape catalog
 

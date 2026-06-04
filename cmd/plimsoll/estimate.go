@@ -27,6 +27,7 @@ type estimateFlags struct {
 	spot         bool
 	committedUse bool
 	output       string
+	kubeVersion  string
 }
 
 // newRootCmd builds the plimsoll root command with its subcommands.
@@ -69,6 +70,7 @@ func newEstimateCmd() *cobra.Command {
 	flags.BoolVar(&f.spot, "spot", false, "use spot/preemptible pricing (indicative)")
 	flags.BoolVar(&f.committedUse, "committed-use", false, "use committed-use/reserved pricing")
 	flags.StringVarP(&f.output, "output", "o", "table", "output format: table, json, or markdown")
+	flags.StringVar(&f.kubeVersion, "kube-version", "", "Kubernetes version to render against (default: modern stable)")
 	return cmd
 }
 
@@ -104,6 +106,7 @@ func runEstimate(w io.Writer, chartPath string, f *estimateFlags, cat *pricing.C
 		ChartPath:   resolved.ChartPath,
 		ValuesFiles: f.valuesFiles,
 		SetValues:   f.setValues,
+		KubeVersion: f.kubeVersion,
 	})
 	if err != nil {
 		return err
