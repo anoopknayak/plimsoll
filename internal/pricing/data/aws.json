@@ -1,0 +1,39 @@
+{
+  "cloud": "aws",
+  "date": "2026-06-01",
+  "currency": "USD",
+  "controlPlaneMonthly": 73.00,
+  "regions": {
+    "us-east-1": {
+      "loadBalancerMonthly": 16.43,
+      "nodes": {
+        "m5.large": {
+          "vcpu": 2,
+          "memBytes": 8589934592,
+          "onDemandHourly": 0.096000,
+          "spotHourly": 0.038400,
+          "committedHourly": 0.060000
+        },
+        "m5.xlarge": {
+          "vcpu": 4,
+          "memBytes": 17179869184,
+          "onDemandHourly": 0.192000,
+          "spotHourly": 0.076800,
+          "committedHourly": 0.121000
+        },
+        "m5.2xlarge": {
+          "vcpu": 8,
+          "memBytes": 34359738368,
+          "onDemandHourly": 0.384000,
+          "spotHourly": 0.153600,
+          "committedHourly": 0.242000
+        }
+      },
+      "disks": {
+        "gp2": { "perGiBMonthly": 0.100 },
+        "gp3": { "perGiBMonthly": 0.080 },
+        "io2": { "perGiBMonthly": 0.125 }
+      }
+    }
+  }
+}

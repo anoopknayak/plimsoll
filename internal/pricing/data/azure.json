@@ -1,0 +1,39 @@
+{
+  "cloud": "azure",
+  "date": "2026-06-01",
+  "currency": "USD",
+  "controlPlaneMonthly": 0.00,
+  "regions": {
+    "eastus": {
+      "loadBalancerMonthly": 18.25,
+      "nodes": {
+        "Standard_D2s_v5": {
+          "vcpu": 2,
+          "memBytes": 8589934592,
+          "onDemandHourly": 0.096000,
+          "spotHourly": 0.038400,
+          "committedHourly": 0.060500
+        },
+        "Standard_D4s_v5": {
+          "vcpu": 4,
+          "memBytes": 17179869184,
+          "onDemandHourly": 0.192000,
+          "spotHourly": 0.076800,
+          "committedHourly": 0.121000
+        },
+        "Standard_D8s_v5": {
+          "vcpu": 8,
+          "memBytes": 34359738368,
+          "onDemandHourly": 0.384000,
+          "spotHourly": 0.153600,
+          "committedHourly": 0.242000
+        }
+      },
+      "disks": {
+        "StandardSSD_LRS": { "perGiBMonthly": 0.075 },
+        "Premium_LRS": { "perGiBMonthly": 0.120 },
+        "UltraSSD_LRS": { "perGiBMonthly": 0.150 }
+      }
+    }
+  }
+}

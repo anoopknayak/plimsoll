@@ -1,0 +1,39 @@
+{
+  "cloud": "gcp",
+  "date": "2026-06-01",
+  "currency": "USD",
+  "controlPlaneMonthly": 73.00,
+  "regions": {
+    "us-central1": {
+      "loadBalancerMonthly": 18.26,
+      "nodes": {
+        "e2-standard-2": {
+          "vcpu": 2,
+          "memBytes": 8589934592,
+          "onDemandHourly": 0.067006,
+          "spotHourly": 0.020100,
+          "committedHourly": 0.042200
+        },
+        "e2-standard-4": {
+          "vcpu": 4,
+          "memBytes": 17179869184,
+          "onDemandHourly": 0.134012,
+          "spotHourly": 0.040200,
+          "committedHourly": 0.084400
+        },
+        "e2-standard-8": {
+          "vcpu": 8,
+          "memBytes": 34359738368,
+          "onDemandHourly": 0.268024,
+          "spotHourly": 0.080400,
+          "committedHourly": 0.168800
+        }
+      },
+      "disks": {
+        "pd-standard": { "perGiBMonthly": 0.040 },
+        "pd-balanced": { "perGiBMonthly": 0.100 },
+        "pd-ssd": { "perGiBMonthly": 0.170 }
+      }
+    }
+  }
+}
