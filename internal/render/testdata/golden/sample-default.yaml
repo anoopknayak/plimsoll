@@ -1,0 +1,137 @@
+---
+# Source: sample/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-api
+  labels:
+    app: release-api
+spec:
+  type: LoadBalancer
+  selector:
+    app: release-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+# Source: sample/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-api
+  labels:
+    app: release-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: release-api
+  template:
+    metadata:
+      labels:
+        app: release-api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/example/api:1.0.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+---
+# Source: sample/templates/worker.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-worker
+  labels:
+    app: release-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: release-worker
+  template:
+    metadata:
+      labels:
+        app: release-worker
+    spec:
+      containers:
+        - name: worker
+          image: ghcr.io/example/worker:1.0.0
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+# Source: sample/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-api
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+---
+# Source: sample/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: release-db
+  labels:
+    app: release-db
+spec:
+  serviceName: release-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: release-db
+  template:
+    metadata:
+      labels:
+        app: release-db
+    spec:
+      containers:
+        - name: db
+          image: ghcr.io/example/db:1.0.0
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: 1
+              memory: 2Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 50Gi

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: broken
+description: A chart that fails to render, used to test error handling
+type: application
+version: 0.1.0
