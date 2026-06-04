@@ -1,0 +1,43 @@
+api:
+  replicas: 3
+  image: ghcr.io/example/api:1.0.0
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+  service:
+    type: LoadBalancer
+    port: 80
+
+worker:
+  replicas: 2
+  image: ghcr.io/example/worker:1.0.0
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+database:
+  replicas: 1
+  image: ghcr.io/example/db:1.0.0
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi
+  storage:
+    size: 50Gi
+    storageClass: standard
+    accessMode: ReadWriteOnce

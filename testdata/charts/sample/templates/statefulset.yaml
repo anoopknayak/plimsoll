@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-db
+  labels:
+    app: {{ .Release.Name }}-db
+spec:
+  serviceName: {{ .Release.Name }}-db
+  replicas: {{ .Values.database.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-db
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-db
+    spec:
+      containers:
+        - name: db
+          image: {{ .Values.database.image }}
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: {{ .Values.database.resources.requests.cpu }}
+              memory: {{ .Values.database.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.database.resources.limits.cpu }}
+              memory: {{ .Values.database.resources.limits.memory }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["{{ .Values.database.storage.accessMode }}"]
+        storageClassName: {{ .Values.database.storage.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.database.storage.size }}
