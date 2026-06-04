@@ -1,0 +1,45 @@
+{
+  "clouds": [
+    {
+      "cloud": "gcp",
+      "region": "us-central1",
+      "nodeShape": "small",
+      "nodeCountMin": 1,
+      "nodeCountMax": 2,
+      "snapshotDate": "2026-06-01",
+      "min": {
+        "compute": 73,
+        "storage": 1,
+        "loadBalancer": 18,
+        "controlPlane": 73
+      },
+      "max": {
+        "compute": 146,
+        "storage": 1,
+        "loadBalancer": 18,
+        "controlPlane": 73
+      }
+    },
+    {
+      "cloud": "aws",
+      "region": "us-east-1",
+      "nodeShape": "m6i.large",
+      "nodeCountMin": 1,
+      "nodeCountMax": 1,
+      "snapshotDate": "2026-06-01",
+      "min": {
+        "compute": 70,
+        "storage": 1.2,
+        "loadBalancer": 16,
+        "controlPlane": 73
+      },
+      "max": {
+        "compute": 70,
+        "storage": 1.2,
+        "loadBalancer": 16,
+        "controlPlane": 73
+      }
+    }
+  ],
+  "spot": false
+}
