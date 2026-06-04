@@ -243,8 +243,9 @@ $RECYCLE.BIN/
 /dist/
 *.exe
 *.out
-plimsoll
-pricing-gen
+# Root-level built binaries (anchored so they don't match the cmd/ source dirs).
+/plimsoll
+/pricing-gen
 
 # Test artifacts
 *.test
