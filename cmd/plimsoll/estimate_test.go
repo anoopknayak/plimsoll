@@ -3,6 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -135,5 +138,76 @@ func TestParsePairs(t *testing.T) {
 	}
 	if got, _ := parsePairs(nil, "region"); got != nil {
 		t.Errorf("nil input should yield nil map, got %v", got)
+	}
+}
+
+// initSampleGitRepo commits the sample chart into a throwaway git repo and
+// returns the repo path. Skips if git is unavailable.
+func initSampleGitRepo(t *testing.T) string {
+	t.Helper()
+	if _, err := exec.LookPath("git"); err != nil {
+		t.Skip("git not installed")
+	}
+	repo := t.TempDir()
+	// Copy the sample chart into the repo under chart/.
+	dst := filepath.Join(repo, "chart")
+	copyTree(t, sampleChart, dst)
+
+	run := func(args ...string) {
+		t.Helper()
+		cmd := exec.Command("git", args...)
+		cmd.Dir = repo
+		cmd.Env = append(os.Environ(),
+			"GIT_AUTHOR_NAME=t", "GIT_AUTHOR_EMAIL=t@e",
+			"GIT_COMMITTER_NAME=t", "GIT_COMMITTER_EMAIL=t@e",
+		)
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v\n%s", args, err, out)
+		}
+	}
+	run("init", "-q")
+	run("checkout", "-q", "-b", "main")
+	run("add", "-A")
+	run("commit", "-q", "-m", "chart")
+	return repo
+}
+
+func copyTree(t *testing.T, src, dst string) {
+	t.Helper()
+	err := filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+		target := filepath.Join(dst, rel)
+		if info.IsDir() {
+			return os.MkdirAll(target, 0o755)
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(target, data, 0o644)
+	})
+	if err != nil {
+		t.Fatalf("copyTree: %v", err)
+	}
+}
+
+// A git source flows through the full pipeline and the materialized clone is
+// cleaned up after the command returns.
+func TestEstimate_GitSource(t *testing.T) {
+	repo := initSampleGitRepo(t)
+	ref := "git+file://" + repo + "#main?path=chart"
+
+	out, err := execute("estimate", ref, "--clouds", "gcp")
+	if err != nil {
+		t.Fatalf("execute git source: %v\n%s", err, out)
+	}
+	if !strings.Contains(out, "gcp") {
+		t.Errorf("git-source output missing gcp:\n%s", out)
 	}
 }

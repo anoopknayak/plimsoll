@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"strings"
 
 	"github.com/spf13/cobra"
 
+	"github.com/anomalyco/plimsoll/internal/chartsource"
 	"github.com/anomalyco/plimsoll/internal/estimate"
 	"github.com/anomalyco/plimsoll/internal/extract"
 	"github.com/anomalyco/plimsoll/internal/output"
@@ -45,7 +47,11 @@ func newEstimateCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "estimate <chart>",
 		Short: "Estimate the monthly cost of a Helm chart across clouds",
-		Args:  cobra.ExactArgs(1),
+		Long: "Estimate the monthly cost of a Helm chart across clouds.\n\n" +
+			"<chart> may be a local path or .tgz, a git repository " +
+			"(git+https://…#ref?path=subdir), a direct https://….tgz archive, " +
+			"an oci:// reference, or a Helm repository chart URL.",
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cat, err := pricing.Load()
 			if err != nil {
@@ -85,8 +91,17 @@ func runEstimate(w io.Writer, chartPath string, f *estimateFlags, cat *pricing.C
 		return err
 	}
 
+	// Resolve the chart reference (local path, git, http archive, oci, or helm
+	// repo) into a local chart path. Remote sources are materialized into a temp
+	// directory that is cleaned up when the command returns.
+	resolved, err := chartsource.Resolve(context.Background(), chartPath, chartsource.Options{})
+	if err != nil {
+		return err
+	}
+	defer resolved.Cleanup() //nolint:errcheck
+
 	manifests, err := render.Render(render.Options{
-		ChartPath:   chartPath,
+		ChartPath:   resolved.ChartPath,
 		ValuesFiles: f.valuesFiles,
 		SetValues:   f.setValues,
 	})
