@@ -61,6 +61,36 @@ gcp    $195.66  $5.00    $18.26         $73.00         $291.92
 `--spot` and `--committed-use` are mutually exclusive. A missing chart path or
 an invalid flag value prints an error and exits non-zero.
 
+### Chart sources
+
+The `<chart>` argument accepts a local path or a remote reference. Remote
+charts are materialized into a temporary directory and removed when the command
+returns — estimation itself still runs entirely offline once the chart is local.
+
+| Form | Example |
+| --- | --- |
+| Local directory | `./mychart` |
+| Local packaged chart | `mychart-1.2.3.tgz` |
+| Git repository | `git+https://github.com/org/repo.git#v1.4.0?path=charts/app` |
+| Git (bare `.git` / SCP) | `https://github.com/org/repo.git`, `git@github.com:org/repo.git` |
+| HTTP(S) archive | `https://example.com/charts/app-1.2.3.tgz` |
+| OCI registry | `oci://registry.example.com/charts/app:1.2.3` |
+
+For Git sources, `#<ref>` selects a branch, tag, or commit and `?path=<subdir>`
+selects a sub-chart within the repo. Git sources require the `git` binary on
+`PATH`; if it is missing, `plimsoll` reports a clear error — install git or
+pre-clone the chart and pass a local path. A plain Helm-repository URL with no
+chart (e.g. `https://charts.example.com`) is rejected; use an `oci://`
+reference or a direct `.tgz` URL instead.
+
+```sh
+# Estimate a chart living in a Git repo sub-directory at a tag
+plimsoll estimate git+https://github.com/org/repo.git#v1.4.0?path=charts/app --clouds gcp
+
+# Estimate a chart pulled from an OCI registry
+plimsoll estimate oci://registry.example.com/charts/app:1.2.3
+```
+
 Examples:
 
 ```sh
@@ -158,5 +188,5 @@ make lint    # gofmt check + go vet
 ```
 
 The pipeline is split into small, independently tested packages:
-`internal/render`, `internal/extract`, `internal/model`, `internal/pack`,
-`internal/pricing`, `internal/estimate`, and `internal/output`.
+`internal/chartsource`, `internal/render`, `internal/extract`, `internal/model`,
+`internal/pack`, `internal/pricing`, `internal/estimate`, and `internal/output`.
