@@ -1,0 +1,19 @@
+{
+  "cloud": "gcp",
+  "date": "2026-06-01",
+  "currency": "USD",
+  "controlPlaneMonthly": 73.00,
+  "regions": {
+    "r1": {
+      "loadBalancerMonthly": 18.00,
+      "nodes": {
+        "small": { "vcpu": 2, "memBytes": 8589934592, "onDemandHourly": 0.10, "spotHourly": 0.03, "committedHourly": 0.06 },
+        "large": { "vcpu": 8, "memBytes": 34359738368, "onDemandHourly": 0.35, "spotHourly": 0.11, "committedHourly": 0.22 }
+      },
+      "disks": {
+        "standard": { "perGiBMonthly": 0.10 },
+        "ssd": { "perGiBMonthly": 0.20 }
+      }
+    }
+  }
+}
