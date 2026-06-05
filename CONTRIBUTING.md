@@ -29,15 +29,15 @@ bin/plimsoll estimate testdata/charts/sample
 
 All workflows go through `make`:
 
-| Command | What it does |
-| --- | --- |
-| `make build` | Compile `bin/plimsoll` and `bin/pricing-gen`. |
-| `make test` | Run the full suite with the race detector and coverage (`go test ./... -race -cover`). |
-| `make cover` | Produce a coverage profile and **enforce the coverage gate** (min 70%). |
-| `make lint` | `gofmt` check plus `go vet`. |
-| `make tidy` | Sync `go.mod` / `go.sum`. |
-| `make all` | `lint` + `test` + `build`. |
-| `make clean` | Remove build and coverage artifacts. |
+| Command      | What it does                                                                           |
+| ------------ | -------------------------------------------------------------------------------------- |
+| `make build` | Compile `bin/plimsoll` and `bin/pricing-gen`.                                          |
+| `make test`  | Run the full suite with the race detector and coverage (`go test ./... -race -cover`). |
+| `make cover` | Produce a coverage profile and **enforce the coverage gate** (min 70%).                |
+| `make lint`  | `gofmt` check plus `go vet`.                                                           |
+| `make tidy`  | Sync `go.mod` / `go.sum`.                                                              |
+| `make all`   | `lint` + `test` + `build`.                                                             |
+| `make clean` | Remove build and coverage artifacts.                                                   |
 
 Before opening a pull request, run `make all` and `make cover` and make sure both
 pass.
@@ -77,18 +77,12 @@ Keep an **atomic, sensible git history** — never one massive commit. Commit pe
 logical unit (one commit per completed task, or a tight test+impl pair), each
 building cleanly with tests passing.
 
-## A note on local-only tooling
-
-Spec-driven / OpenSpec planning artifacts live **locally only** and are
-intentionally gitignored. Do **not** check in the `openspec/`, `.agent/`,
-`.opencode/`, or `.pi/` directories.
-
 ## Pull requests
 
 1. Branch from `main`.
 2. Make your change following the workflow above.
 3. Ensure `make all` and `make cover` pass.
-4. Open a PR with a clear description of the *why*, not just the *what*.
+4. Open a PR with a clear description of the _why_, not just the _what_.
 
 If you're changing pricing data, prefer regenerating via `pricing-gen` rather
 than hand-editing the embedded snapshots — see the
